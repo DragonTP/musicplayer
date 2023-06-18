@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music player</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="shortcut icon" href="./img/favicon.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="./style.css">
+    <script defer src="./script.js"></script>
+</head>
+
+<body>
+    <div class="player">
+        <!-- Dashboard -->
+        <div class="dashboard">
+            <div class="darkmode">
+                <span>Dark Mode</span>
+                <i class="fa-solid fa-toggle-off btn-on"></i>
+                <i class="fa-solid fa-toggle-on btn-off none"></i>
+            </div>
+            <!-- Header -->
+            <header>
+                <h4>Now playing:</h4>
+                <h2>String 57th & 9th</h2>
+            </header>
+
+            <!-- CD -->
+            <div class="cd">
+                <div class="cd-thumb"
+                    style="background-image: url('https://i.ytimg.com/vi/jTLhQf5KJSc/maxresdefault.jpg')">
+                </div>
+            </div>
+
+            <!-- Control -->
+            <div class="control">
+                <div class="btn btn-repeat" title="Repeat when song ended">
+                    <i class="fas fa-redo"></i>
+                </div>
+                <div class="btn btn-prev" title="Move to previous song">
+                    <i class="fas fa-step-backward"></i>
+                </div>
+                <div class="btn btn-toggle-play" title="Click to play or pause song">
+                    <i class="fas fa-pause icon-pause"></i>
+                    <i class="fas fa-play icon-play"></i>
+                </div>
+                <div class="btn btn-next" title="Move to next song">
+                    <i class="fas fa-step-forward"></i>
+                </div>
+                <div class="btn btn-random" title="Play random song on the list">
+                    <i class="fas fa-random"></i>
+                </div>
+            </div>
+
+            <div class="container">
+                <p class="timeline"><span class="current-time">00:00</span> / <span class="duration">00:00</span></p>
+                <div class="volume">
+                    <i class="btn btn-volume fa-solid fa-volume-high"></i>
+                    <i class="btn btn-mute none fa-solid fa-volume-xmark"></i>
+                    <input type="range" id="volume" value="100" step="1" min="0" max="100">
+                    <span class="label-volume">100</span>
+                </div>
+            </div>
+            <input id="progress" class="progress" type="range" value="0" step="1" min="0" max="1000">
+            <audio id="audio" src=""></audio>
+        </div>
+
+        <!-- Playlist -->
+        <div class="playlist">
+            <div class="song">
+                <div class="thumb"
+                    style="background-image: url('https://i.ytimg.com/vi/jTLhQf5KJSc/maxresdefault.jpg')">
+                </div>
+                <div class="body">
+                    <h3 class="title">Music name</h3>
+                    <p class="author">Singer</p>
+                </div>
+                <div class="option">
+                    <i class="fas fa-ellipsis-h"></i>
+                </div>
+            </div>
+            <div class="song">
+                <div class="thumb"
+                    style="background-image: url('https://i.ytimg.com/vi/jTLhQf5KJSc/maxresdefault.jpg')">
+                </div>
+                <div class="body">
+                    <h3 class="title">Music name</h3>
+                    <p class="author">Singer</p>
+                </div>
+                <div class="option">
+                    <i class="fas fa-ellipsis-h"></i>
+                </div>
+            </div>
+            <div class="song">
+                <div class="thumb"
+                    style="background-image: url('https://i.ytimg.com/vi/jTLhQf5KJSc/maxresdefault.jpg')">
+                </div>
+                <div class="body">
+                    <h3 class="title">Music name</h3>
+                    <p class="author">Singer</p>
+                </div>
+                <div class="option">
+                    <i class="fas fa-ellipsis-h"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Design from: https://static.collectui.com/shots/3671744/musicloud-revolutionary-app-for-music-streaming-large -->
+</body>
+
+</html>
