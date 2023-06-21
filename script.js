@@ -353,12 +353,10 @@ class App {
         curTarget.querySelector('.btn-off').classList.toggle('none', !this.#isDarkmode);
         curTarget.querySelector('.btn-on').classList.toggle('none', this.#isDarkmode);
         const text = curTarget.querySelector('span');
+        const data = this.#isDarkmode ? this.#darkMode : this.#lightMode;
         text.textContent = this.#isDarkmode ? 'Light Mode' : 'Dark Mode';
-        if (this.#isDarkmode) {
-            Object.entries(this.#darkMode).forEach(([key, value]) => document.documentElement.style.setProperty(`${key}`, `${value}`))
-        } else {
-            Object.entries(this.#lightMode).forEach(([key, value]) => document.documentElement.style.setProperty(key, value))
-        }
+        
+        Object.entries(data).forEach(([key, value]) => document.documentElement.style.setProperty(key, value));
     }
     reset() {
         localStorage.clear();
