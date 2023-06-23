@@ -93,6 +93,18 @@ class App {
             singer: 'tlinh (ft. 2pillz)',
             path: './music/neulucdo.mp3',
         },
+        {
+            name: 'SUY',
+            image: './img/suy.jpg',
+            singer: 'NGER aka MCK',
+            path: './music/suy.mp3',
+        },
+        {
+            name: 'Không Thích',
+            image: './img/kothich.jpg',
+            singer: 'Low G',
+            path: './music/kothich.mp3',
+        },
     ];
     #currentIndex;
     #curVol;
@@ -140,6 +152,8 @@ class App {
         btnPrev.addEventListener('click', this.#prevSong.bind(this));
         btnRepeat.addEventListener('click', this.#repeatSong.bind(this));
         btnRandom.addEventListener('click', this.#randomSong.bind(this));
+        audio.addEventListener('play', this.#playSong.bind(this));
+        audio.addEventListener('pause', this.#pauseSong.bind(this));
         audio.addEventListener('timeupdate', this.#updateTime);
         audio.addEventListener('loadedmetadata', this.#showDuration.bind(this));
         audio.addEventListener('ended', this.#handleEndSong.bind(this));
@@ -196,15 +210,19 @@ class App {
         })
     }
     #playAndPause() {
-        player.classList.toggle('playing');
-        if (player.classList.contains('playing')) {
-            audio.play();
-            this.#cdAnimate.play();
-        } else {
-            audio.pause();
-            this.#cdAnimate.pause();
-        }
+        audio.paused ? audio.play() : audio.pause();
     }
+
+    #playSong() {
+        player.classList.add('playing');
+        this.#cdAnimate.play();
+    }
+
+    #pauseSong() {
+        player.classList.remove('playing');
+        this.#cdAnimate.pause();
+    }
+
     #loadCurrentSong() {
         const currentSong = this.#songs[this.#currentIndex];
         document.querySelector('header h2').textContent = currentSong.name;
@@ -215,7 +233,6 @@ class App {
     }
     #playCurrentSong() {
         this.#loadCurrentSong();
-        player.classList.add('playing');
         audio.play();
         this.#sectionIntoView.call(this);
         this.#cdAnimate.play();
@@ -238,7 +255,7 @@ class App {
         this.#playCurrentSong();
     }
     #prevSong() {
-        if (this.#randomSong)
+        if (this.#isRandom)
             this.#playRandom()
         else {
             this.#currentIndex--;
@@ -355,7 +372,7 @@ class App {
         const text = curTarget.querySelector('span');
         const data = this.#isDarkmode ? this.#darkMode : this.#lightMode;
         text.textContent = this.#isDarkmode ? 'Light Mode' : 'Dark Mode';
-        
+
         Object.entries(data).forEach(([key, value]) => document.documentElement.style.setProperty(key, value));
     }
     reset() {
