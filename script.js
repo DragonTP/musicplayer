@@ -39,81 +39,81 @@ class App {
             singer: 'RPT MCK ( ft. Hoàng Tôn )',
             path: './music/suittie.mp3',
         },
-        {
-            name: 'Rumors 💋',
-            image: './img/rumors.jpg',
-            singer: 'NEFFEX',
-            path: './music/rumors.mp3',
-        },
-        {
-            name: 'Có Em',
-            image: './img/coem.jpg',
-            singer: 'Madihu (Feat. Low G)',
-            path: './music/coem.mp3',
-        },
-        {
-            name: 'Making My Way',
-            image: './img/makingmyway.jpg',
-            singer: 'Sơn Tùng MTP',
-            path: './music/makingmyway.mp3',
-        },
-        {
-            name: 'ĐẠI GIA LO',
-            image: './img/daigialo.jpg',
-            singer: 'ĐINH TRANG ft. SĨ CHƯƠNG',
-            path: './music/daigialo.mp3',
-        },
-        {
-            name: 'Grateful',
-            image: './img/grateful.jpg',
-            singer: 'NEFFEX',
-            path: './music/grateful.mp3',
-        },
-        {
-            name: 'L.I.E',
-            image: './img/lie.jpg',
-            singer: 'MONO',
-            path: './music/lie.mp3',
-        },
-        {
-            name: 'Ai Mới Là Kẻ Xấu Xa',
-            image: './img/aimoilakexauxa.jpg',
-            singer: 'MCK',
-            path: './music/aimoilakexauxa.mp3',
-        },
-        {
-            name: 'Chạy Ngay Đi',
-            image: './img/chayngaydi.jpg',
-            singer: 'SƠN TÙNG M-TP',
-            path: './music/chayngaydi.mp3',
-        },
-        {
-            name: 'Nếu lúc đó',
-            image: './img/neulucdo.jpg',
-            singer: 'tlinh (ft. 2pillz)',
-            path: './music/neulucdo.mp3',
-        },
-        {
-            name: 'SUY',
-            image: './img/suy.jpg',
-            singer: 'NGER aka MCK',
-            path: './music/suy.mp3',
-        },
-        {
-            name: 'Không Thích',
-            image: './img/kothich.jpg',
-            singer: 'Low G',
-            path: './music/kothich.mp3',
-        },
+        // {
+        //     name: 'Rumors 💋',
+        //     image: './img/rumors.jpg',
+        //     singer: 'NEFFEX',
+        //     path: './music/rumors.mp3',
+        // },
+        // {
+        //     name: 'Có Em',
+        //     image: './img/coem.jpg',
+        //     singer: 'Madihu (Feat. Low G)',
+        //     path: './music/coem.mp3',
+        // },
+        // {
+        //     name: 'Making My Way',
+        //     image: './img/makingmyway.jpg',
+        //     singer: 'Sơn Tùng MTP',
+        //     path: './music/makingmyway.mp3',
+        // },
+        // {
+        //     name: 'ĐẠI GIA LO',
+        //     image: './img/daigialo.jpg',
+        //     singer: 'ĐINH TRANG ft. SĨ CHƯƠNG',
+        //     path: './music/daigialo.mp3',
+        // },
+        // {
+        //     name: 'Grateful',
+        //     image: './img/grateful.jpg',
+        //     singer: 'NEFFEX',
+        //     path: './music/grateful.mp3',
+        // },
+        // {
+        //     name: 'L.I.E',
+        //     image: './img/lie.jpg',
+        //     singer: 'MONO',
+        //     path: './music/lie.mp3',
+        // },
+        // {
+        //     name: 'Ai Mới Là Kẻ Xấu Xa',
+        //     image: './img/aimoilakexauxa.jpg',
+        //     singer: 'MCK',
+        //     path: './music/aimoilakexauxa.mp3',
+        // },
+        // {
+        //     name: 'Chạy Ngay Đi',
+        //     image: './img/chayngaydi.jpg',
+        //     singer: 'SƠN TÙNG M-TP',
+        //     path: './music/chayngaydi.mp3',
+        // },
+        // {
+        //     name: 'Nếu lúc đó',
+        //     image: './img/neulucdo.jpg',
+        //     singer: 'tlinh (ft. 2pillz)',
+        //     path: './music/neulucdo.mp3',
+        // },
+        // {
+        //     name: 'SUY',
+        //     image: './img/suy.jpg',
+        //     singer: 'NGER aka MCK',
+        //     path: './music/suy.mp3',
+        // },
+        // {
+        //     name: 'Không Thích',
+        //     image: './img/kothich.jpg',
+        //     singer: 'Low G',
+        //     path: './music/kothich.mp3',
+        // },
     ];
     #currentIndex;
     #curVol;
-    #alreadyPlayed = [];
+    #playedSong = [];
     #isSectionScroll = false;
     #isDarkmode;
     #idTimeOut;
-    #isRandom;
-    #isRepeat;
+    #isRandom = false;
+    #isRepeat = false;
     #cdAnimate = cdThumb.animate([
         { transform: 'rotate(360deg)' }
     ], {
@@ -160,16 +160,14 @@ class App {
         progress.addEventListener('input', this.#seekToPos);
         volume.addEventListener('input', this.#customVolume.bind(this));
         volume.addEventListener('click', this.#muteImmediately.bind(this));
+        btnDarkmode.addEventListener('click', this.#toggleDarkMode.bind(this));
 
         //Get from storage
         const storage = this.#getLocalStorage();
         this.#currentIndex = storage?.currentMusic ?? 0;
         this.#curVol = storage?.currentVolume ?? 100;
         this.#isDarkmode = storage?.darkMode || false;
-        this.#isRandom = storage?.isRandom || false;
-        this.#isRepeat = storage?.isRepeat || false;
         this.#cdAnimate.pause();
-        btnDarkmode.addEventListener('click', this.#toggleDarkMode.bind(this));
 
         // Set default
         this.#loadCurrentSong();
@@ -247,7 +245,7 @@ class App {
     }
     #nextSong() {
         if (this.#isRandom)
-            this.#playRandom()
+            this.#currentIndex = this.#playRandom();
         else {
             this.#currentIndex++;
             if (this.#currentIndex === this.#songs.length) this.#currentIndex = 0
@@ -256,7 +254,7 @@ class App {
     }
     #prevSong() {
         if (this.#isRandom)
-            this.#playRandom()
+            this.#currentIndex = this.#playedSong.pop() || this.#playRandom();
         else {
             this.#currentIndex--;
             if (this.#currentIndex < 0) this.#currentIndex = this.#songs.length - 1;
@@ -268,7 +266,7 @@ class App {
         e.currentTarget.classList.toggle('active', this.#isRepeat);
         if (this.#isRandom) {
             this.#isRandom = false;
-            btnRandom.classList.remove('active')
+            btnRandom.classList.remove('active');
         }
         this.#setLocalStorage();
     }
@@ -282,12 +280,12 @@ class App {
         this.#setLocalStorage();
     }
     #playRandom() {
+        this.#playedSong.push(this.#currentIndex);
+        if (this.#playedSong.length === this.#songs.length) this.#playedSong = [];
         let random = Math.floor(Math.random() * this.#songs.length);
-        while (random === this.#currentIndex || this.#alreadyPlayed.includes(random))
+        while (random === this.#currentIndex || this.#playedSong.includes(random))
             random = Math.floor(Math.random() * this.#songs.length);
-        this.#alreadyPlayed.push(random);
-        this.#currentIndex = random;
-        if (this.#alreadyPlayed.length > this.#songs.length - 1) this.#alreadyPlayed = [];
+        return random;
     }
     #handleEndSong() {
         if (this.#isRepeat) audio.play()
@@ -325,7 +323,7 @@ class App {
     #volumeChange(vol) {
         audio.volume = vol / 100;
         labelVolume.textContent = `${vol}`.padStart(2, 0);
-        volumeSidebar.value = vol
+        volumeSidebar.value = vol;
         this.#setLocalStorage();
     }
     #muteImmediately(e) {
@@ -351,8 +349,6 @@ class App {
             currentMusic: this.#currentIndex,
             currentVolume: this.#curVol,
             darkMode: this.#isDarkmode,
-            isRandom: this.#isRandom,
-            isRepeat: this.#isRepeat,
         }
         localStorage.setItem('musicPlayer', JSON.stringify(objStorage));
     }
