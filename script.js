@@ -149,7 +149,7 @@ class App {
         this.#currentIndex = storage?.currentMusic ?? 0;
         this.#curVol = storage?.currentVolume ?? 100;
         this.#isDarkmode = storage?.darkMode || false;
-        this.#favouriteSongs = storage?.favouriteSongs || [0];
+        this.#favouriteSongs = storage?.favouriteSongs || [];
         this.#cdAnimate.pause();
 
         // Initiailize and add event listener
