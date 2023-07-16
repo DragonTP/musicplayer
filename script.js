@@ -387,7 +387,7 @@ class App {
         this.#isFavouriteSong ? this.#addFavouriteSong() : this.#deleteFavouriteSong();
         this.#renderSong();
         playlist.querySelector(`.song[data-song="${this.#currentIndex}"]`).classList.add('active');
-        this.#getLocalStorage();
+        this.#setLocalStorage();
     }
     #renderFavouriteSong() {
         btnHeart.innerHTML = this.#isFavouriteSong ? `<i class="fa-solid fa-heart"></i>` :`<i class="fa-regular fa-heart"></i>`
