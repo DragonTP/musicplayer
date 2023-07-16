@@ -28,18 +28,34 @@ html {
     font-family: "Poppins", sans-serif;
 }
 
-.darkmode {
-    display: inline-block;
-    position: relative;
-    top: -10px;
-    left: 16px;
-    color: var(--text-color);
-    font-size: 16px;
+.header-items {
+    margin-left: 20px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
     cursor: pointer;
 }
 
-.darkmode i {
+.darkmode {
+    display: inline-block;
+    color: var(--text-color);
+    font-size: 16px;
+}
+
+.darkmode i, .btn-heart {
     font-size: 20px;
+}
+
+.btn-heart {
+    color: var(--btn-color);
+}
+
+.btn-heart .fa-solid, .option .fa-solid {
+    color: var(--primary-color);
+}
+
+.active .fa-solid.fa-heart {
+    color: #feff00;
 }
 
 .player {
@@ -247,15 +263,19 @@ header h2 {
 }
 
 .song .option {
+    display: flex;
+    min-height: 59px;
+    align-items: center;
     padding: 16px 8px;
     color: var(--btn-color);
     font-size: 18px;
+    gap: 10px;
 }
 
 .container {
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
+    align-items: center;
 }
 
 .label-volume {

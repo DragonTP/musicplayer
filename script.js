@@ -17,7 +17,8 @@ const labelVolume = document.querySelector('.label-volume');
 const btnVolume = document.querySelector('.btn-volume');
 const btnMute = document.querySelector('.btn-mute');
 const volumeSidebar = document.querySelector('#volume');
-const btnDarkmode = document.querySelector('.darkmode')
+const btnDarkmode = document.querySelector('.darkmode');
+const btnHeart = document.querySelector('.btn-heart');
 
 class App {
     #songs = [
@@ -114,6 +115,8 @@ class App {
     #idTimeOut;
     #isRandom = false;
     #isRepeat = false;
+    #isFavouriteSong;
+    #favouriteSongs;
     #cdAnimate = cdThumb.animate([
         { transform: 'rotate(360deg)' }
     ], {
@@ -141,6 +144,15 @@ class App {
         '--box-shadow': '0 2px 3px rgba(255, 255, 255, 0.1)'
     }
     constructor() {
+        //Get from storage
+        const storage = this.#getLocalStorage();
+        this.#currentIndex = storage?.currentMusic ?? 0;
+        this.#curVol = storage?.currentVolume ?? 100;
+        this.#isDarkmode = storage?.darkMode || false;
+        this.#favouriteSongs = storage?.favouriteSongs || [0];
+        this.#cdAnimate.pause();
+
+        // Initiailize and add event listener
         this.#renderSong();
         this.#shrinkAndScale();
         playlist.addEventListener('click', this.#playSongWhenClick.bind(this));
@@ -161,13 +173,7 @@ class App {
         volume.addEventListener('input', this.#customVolume.bind(this));
         volume.addEventListener('click', this.#muteImmediately.bind(this));
         btnDarkmode.addEventListener('click', this.#toggleDarkMode.bind(this));
-
-        //Get from storage
-        const storage = this.#getLocalStorage();
-        this.#currentIndex = storage?.currentMusic ?? 0;
-        this.#curVol = storage?.currentVolume ?? 100;
-        this.#isDarkmode = storage?.darkMode || false;
-        this.#cdAnimate.pause();
+        btnHeart.addEventListener('click', this.#toggleFavouriteSong.bind(this));
 
         // Set default
         this.#loadCurrentSong();
@@ -188,11 +194,12 @@ class App {
                 <p class="author">${singer}</p>
             </div>
             <div class="option">
+                <i class="${this.#favouriteSongs.includes(i) ? 'fa-solid' : 'fa-regular'} fa-heart"></i>
                 <i class="fas fa-ellipsis-h"></i>
             </div>
         </div>
             `
-            playlist.insertAdjacentHTML('beforeend', html)
+            playlist.insertAdjacentHTML('beforeend', html);
         })
     }
     #shrinkAndScale() {
@@ -227,6 +234,8 @@ class App {
         cdThumb.style.backgroundImage = `url(${currentSong.image})`;
         [...playlist.children].forEach(child => child.classList.remove('active'));
         playlist.querySelector(`.song[data-song="${this.#currentIndex}"]`).classList.add('active');
+        this.#isFavouriteSong = this.#favouriteSongs.includes(this.#currentIndex);
+        this.#renderFavouriteSong();
         audio.src = currentSong.path;
     }
     #playCurrentSong() {
@@ -349,13 +358,14 @@ class App {
             currentMusic: this.#currentIndex,
             currentVolume: this.#curVol,
             darkMode: this.#isDarkmode,
+            favouriteSongs: this.#favouriteSongs
         }
         localStorage.setItem('musicPlayer', JSON.stringify(objStorage));
     }
     #getLocalStorage() {
         const current = JSON.parse(localStorage.getItem('musicPlayer'));
         if (!current) return;
-        return current
+        return current;
     }
     #toggleDarkMode(e) {
         this.#isDarkmode = !this.#isDarkmode;
@@ -370,6 +380,24 @@ class App {
         text.textContent = this.#isDarkmode ? 'Light Mode' : 'Dark Mode';
 
         Object.entries(data).forEach(([key, value]) => document.documentElement.style.setProperty(key, value));
+    }
+    #toggleFavouriteSong() {
+        this.#isFavouriteSong = !this.#isFavouriteSong;
+        this.#renderFavouriteSong();
+        this.#isFavouriteSong ? this.#addFavouriteSong() : this.#deleteFavouriteSong();
+        this.#renderSong();
+        playlist.querySelector(`.song[data-song="${this.#currentIndex}"]`).classList.add('active');
+        this.#getLocalStorage();
+    }
+    #renderFavouriteSong() {
+        btnHeart.innerHTML = this.#isFavouriteSong ? `<i class="fa-solid fa-heart"></i>` :`<i class="fa-regular fa-heart"></i>`
+    }
+    #addFavouriteSong() {
+        this.#favouriteSongs.push(this.#currentIndex);
+    }
+    #deleteFavouriteSong() {
+        const index =  this.#favouriteSongs.indexOf(this.#currentIndex);
+        this.#favouriteSongs.splice(index, 1);
     }
     reset() {
         localStorage.clear();
